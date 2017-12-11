@@ -1,0 +1,54 @@
+provider "aws" {
+access_key = "${var.access_key}"
+secret_key = "${var.secret_key}"
+region = "${var.region}"
+}
+
+resource "aws_instance" "example" {
+ami = "${var.ami_1}"
+instance_type = "t2.micro"
+key_name = "new"
+tags {
+Name = "Instance-1"
+}
+connection {
+type = "ssh"
+user = "ubuntu"
+private_key = "${file("/path/to/keyfile")}"
+}
+provisioner "remote-exec" {
+    inline = [
+     "sudo apt-get update",
+     "sudo apt install python -y"
+     ]
+}
+provisioner "local-exec" {
+    command = "sudo apt-get update"
+}
+provisioner "local-exec" {
+    command = "sudo apt-get install software-properties-common"
+}
+provisioner "local-exec" {
+    command = "echo ' ' | sudo apt-add-repository ppa:ansible/ansible"
+}
+provisioner "local-exec" {
+   command = "sudo apt-get update"
+}
+provisioner "local-exec" {
+   command = "sudo apt-get install ansible -y"
+}
+
+provisioner "local-exec" {
+    command = "echo ${aws_instance.example.public_ip} >> /opt/terraform/ip1.txt"
+}
+
+provisioner "local-exec" {
+    command = "echo ansible_ssh_private_key_file=/opt/terraform/new  ansible_ssh_user=ubuntu >> /opt/terraform/ip1.txt"
+}
+provisioner "local-exec" {
+    command = "awk 'ORS=NR%2?FS:RS' /opt/terraform/ip1.txt >> /etc/ansible/hosts"
+}
+
+
+provisioner "local-exec" {
+    command = "ansible-playbook /opt/terraform/jenkins.yml "
