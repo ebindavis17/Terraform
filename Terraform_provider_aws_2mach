@@ -1,3 +1,15 @@
+#######################################################################################################################################
+This Terraform scipt will provision 2 AWS instances, a Linux machine and a Windows machine
+
+Step_by_Step:
+* Using aws module , provisoning aws instances
+* Creating VPC - "TestVPC"
+* Creating 2 Subnets - Linux and Windows subnet
+* Creating security group for Ec2 instances
+* Creating EC2 instance
+
+#######################################################################################################################################
+
 #Provider file
 
 provider "aws" {
