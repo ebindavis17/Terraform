@@ -1,3 +1,16 @@
+This Terraform script will provision a aws instance by specifying your access key, secret key and region. It will create a default VPC,
+subnet, internet gateways and Firewall rules. Here i specified the key name and key path and also the connection details. Finally calling
+Ansible playbook for loading to the machine to be provisioned using terraform.
+
+Step_by_Step:
+* Creates an aws instance
+* Installing python to the newly provisoned machine using the module "remote aws"
+* Installing Ansible to the local terraform machine
+* Mapping the Ip , username and keypath to the host file of the installed Ansible
+* Executing the Playbook(jenkins.yml) which i have in the local machine
+
+######################################################################################################################################
+
 provider "aws" {
 access_key = "${var.access_key}"
 secret_key = "${var.secret_key}"
